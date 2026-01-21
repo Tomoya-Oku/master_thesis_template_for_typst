@@ -1,14 +1,11 @@
 // Store theorem environment numbering
-#let thmcounters = state("thm",
-  (
-    "counters": ("heading": ()),
-    "latest": ()
-  )
-)
+#let thmcounters = state("thm", (
+  "counters": ("heading": ()),
+  "latest": (),
+))
 
 // Setting theorem environment
 #let thmenv(identifier, base, base_level, fmt) = {
-
   let global_numbering = numbering
 
   return (
@@ -19,7 +16,7 @@
     refnumbering: auto,
     supplement: identifier,
     base: base,
-    base_level: base_level
+    base_level: base_level,
   ) => {
     let name = none
     if args != none and args.pos().len() > 0 {
@@ -40,7 +37,7 @@
           // Manually update heading counter
           counters.at("heading") = heading-counter
           if not identifier in counters.keys() {
-            counters.insert(identifier, (0, ))
+            counters.insert(identifier, (0,))
           }
 
           let tc = counters.at(identifier)
@@ -51,7 +48,7 @@
             if base_level != none {
               if bc.len() < base_level {
                 bc = bc + (0,) * (base_level - bc.len())
-              } else if bc.len() > base_level{
+              } else if bc.len() > base_level {
                 bc = bc.slice(0, base_level)
               }
             }
@@ -71,7 +68,7 @@
           let latest = counters.at(identifier)
           return (
             "counters": counters,
-            "latest": latest
+            "latest": latest,
           )
         })
       }
@@ -82,9 +79,10 @@
     }
 
     return figure(
-      result +  // hacky!
-      fmt(name, number, body, ..args.named()) +
-      [#metadata(identifier) <meta:thmenvcounter>],
+      result
+        + // hacky!
+        fmt(name, number, body, ..args.named())
+        + [#metadata(identifier) <meta:thmenvcounter>],
       kind: "thmenv",
       outlined: false,
       caption: none,
@@ -134,15 +132,15 @@
         breakable: false,
         ..blockargs.named(),
         ..blockargs_individual.named(),
-        [#title#name#separator#body]
-      )
+        [#title#name#separator#body],
+      ),
     )
   }
   return thmenv(
     identifier,
     base,
     base_level,
-    boxfmt
+    boxfmt,
   ).with(
     supplement: supplement,
   )
@@ -231,8 +229,8 @@
     abstract_ja
     par(first-line-indent: 0em)[
       #text(weight: "bold", size: 12pt)[
-      キーワード:
-      #keywords_ja.join(", ")
+        キーワード:
+        #keywords_ja.join(", ")
       ]
     ]
   } else {
@@ -248,7 +246,7 @@
     abstract_en
     par(first-line-indent: 0em)[
       #text(weight: "bold", size: 12pt)[
-        Key Words: 
+        Key Words:
         #keywords_en.join("; ")
       ]
     ]
@@ -270,50 +268,50 @@
 
 // Definition of chapter outline
 #let toc() = {
- align(left)[
-   #text(size: 20pt, weight: "bold")[
-     #v(30pt)
-     目次
-     #v(30pt)
-   ]
- ]
+  align(left)[
+    #text(size: 20pt, weight: "bold")[
+      #v(30pt)
+      目次
+      #v(30pt)
+    ]
+  ]
 
- set text(size: 12pt) 
- set par(leading: 1.24em, first-line-indent: 0pt)
- 
- context {
-   let elements = query(heading.where(outlined: true))
-   for el in elements {
-     let before_toc = query(heading.where(outlined: true).before(here())).find((one) => {one.body == el.body}) != none
-     let page_num = if before_toc {
-       numbering("i", counter(page).at(el.location()).first())
-     } else {
-       counter(page).at(el.location()).first()
-     }
+  set text(size: 12pt)
+  set par(leading: 1.24em, first-line-indent: 0pt)
 
-     link(el.location())[#{
-      // acknoledgement has no numbering
-       let chapt_num = if el.numbering != none {
-         numbering(el.numbering, ..counter(heading).at(el.location()))
-       } else {none}
+  context {
+    let elements = query(heading.where(outlined: true))
+    for el in elements {
+      let before_toc = query(heading.where(outlined: true).before(here())).find(one => { one.body == el.body }) != none
+      let page_num = if before_toc {
+        numbering("i", counter(page).at(el.location()).first())
+      } else {
+        counter(page).at(el.location()).first()
+      }
 
-       if el.level == 1 {
-         set text(weight: "black")
-         if chapt_num == none {} else {
-           chapt_num + "  "
-         }
-         to-string(el.body)
-       } else if el.level == 2 {
-         h(2em) + chapt_num + " " + to-string(el.body)
-       } else {
-         h(5em) + chapt_num + " " + to-string(el.body)
-       }
-     }]
-     box(width: 1fr, h(0.5em) + box(width: 1fr, repeat[.]) + h(0.5em))
-     [#page_num]
-     linebreak()
-   }
- }
+      link(el.location())[#{
+        // acknoledgement has no numbering
+        let chapt_num = if el.numbering != none {
+          numbering(el.numbering, ..counter(heading).at(el.location()))
+        } else { none }
+
+        if el.level == 1 {
+          set text(weight: "black")
+          if chapt_num == none {} else {
+            chapt_num + "  "
+          }
+          to-string(el.body)
+        } else if el.level == 2 {
+          h(2em) + chapt_num + " " + to-string(el.body)
+        } else {
+          h(5em) + chapt_num + " " + to-string(el.body)
+        }
+      }]
+      box(width: 1fr, h(0.5em) + box(width: 1fr, repeat[.]) + h(0.5em))
+      [#page_num]
+      linebreak()
+    }
+  }
 }
 
 // Definition of image outline
@@ -328,13 +326,13 @@
 
   set text(size: 12pt)
   set par(leading: 1.24em, first-line-indent: 0pt)
-  
+
   context {
     let elements = query(
       figure.where(
         outlined: true,
-        kind: "image"
-      )
+        kind: "image",
+      ),
     )
     for el in elements {
       let loc = el.location()
@@ -342,7 +340,7 @@
       let num = counter(el.kind + "-chapter" + str(chapt)).at(loc).at(0) + 1
       let page_num = counter(page).at(loc).first()
       let caption_body = to-string(el.caption.body)
-      
+
       str(chapt)
       "."
       str(num)
@@ -367,13 +365,13 @@
 
   set text(size: 12pt)
   set par(leading: 1.24em, first-line-indent: 0pt)
-  
+
   context {
     let elements = query(
       figure.where(
         outlined: true,
-        kind: "table"
-      )
+        kind: "table",
+      ),
     )
     for el in elements {
       let loc = el.location()
@@ -381,7 +379,7 @@
       let num = counter(el.kind + "-chapter" + str(chapt)).at(loc).at(0) + 1
       let page_num = counter(page).at(loc).first()
       let caption_body = to-string(el.caption.body)
-      
+
       str(chapt)
       "."
       str(num)
@@ -404,10 +402,8 @@
 #let master_thesis(
   // The master thesis title.
   title: "ここにtitleが入る",
-
   // The paper`s author.
   author: "ここに著者が入る",
-
   // The author's information
   university: "",
   school: "",
@@ -416,23 +412,18 @@
   mentor: "",
   mentor-post: "",
   class: "修士",
-  date: (datetime.today().year(), datetime.today().month(), datetime.today().day()),
-
+  date: none,
   paper-type: "論文",
-
   // Abstruct
   abstract_ja: [],
   abstract_en: [],
   keywords_ja: (),
   keywords_en: (),
-
   // The paper size to use.
   paper-size: "a4",
-
   // The path to a bibliography file if you want to cite some external
   // works.
   bibliography-file: none,
-
   // The paper's content.
   body,
 ) = {
@@ -526,13 +517,16 @@
 
   // Set the body font. TeX Gyre Pagella is a free alternative
   // to Palatino.
-  set text(font: (
-    "Times New Roman", // Windows
-    // "Nimbus Roman", // Ubuntu
-    // "Hiragino Mincho ProN", // Mac
-    "Yu Mincho", // Windows
-    // "Noto Serif CJK JP", // Ubuntu
-    ), size: 12pt)
+  set text(
+    font: (
+      "Times New Roman", // Windows
+      "Nimbus Roman", // Ubuntu
+      // "Hiragino Mincho ProN", // Mac
+      "Yu Mincho", // Windows
+      "Noto Serif CJK JP", // Ubuntu
+    ),
+    size: 12pt,
+  )
 
   // Configure the page properties.
   set page(
@@ -544,13 +538,7 @@
   align(center)[
     #v(80pt)
     #text(
-      size: 16pt,
-    )[
-      #university #school #department
-    ]
-
-    #text(
-      size: 16pt,
+      size: 20pt,
     )[
       #class#paper-type
     ]
@@ -560,24 +548,35 @@
     )[
       #title
     ]
-    #v(50pt)
+    #v(200pt)
+
     #text(
-      size: 16pt,
+      size: 20pt,
+    )[
+      #date.year() 年 #date.month() 月 #date.day() 日 提出
+    ]
+
+    #text(
+      size: 20pt,
+    )[
+      指導教員: #mentor #mentor-post
+    ]
+
+    #v(20pt)
+
+    #text(
+      size: 20pt,
+    )[
+      #university #school \
+      #department
+    ]
+
+    #text(
+      size: 20pt,
     )[
       #id #author
     ]
 
-    #text(
-      size: 16pt,
-    )[
-      指導教員: #mentor #mentor-post
-    ]
-    #v(40pt)
-    #text(
-      size: 16pt,
-    )[
-      #date.at(0) 年 #date.at(1) 月 #date.at(2) 日 提出
-    ]
     #pagebreak()
   ]
 
@@ -594,7 +593,7 @@
   set par(leading: 0.78em, first-line-indent: 12pt, justify: true)
   set par(spacing: 0.78em)
 
-   // Configure chapter headings.
+  // Configure chapter headings.
   set heading(numbering: (..nums) => {
     nums.pos().map(str).join(".") + " "
   })
@@ -604,13 +603,13 @@
     set text(weight: "bold", size: 20pt)
     set block(spacing: 1.5em)
     let pre_chapt = if it.numbering != none {
-          text()[
-            #v(50pt)
-            第
-            #numbering(it.numbering, ..counter(heading).at(it.location()))
-            章
-          ] 
-        } else {none}
+      text()[
+        #v(50pt)
+        第
+        #numbering(it.numbering, ..counter(heading).at(it.location()))
+        章
+      ]
+    } else { none }
     text()[
       #pre_chapt \
       #it.body \
@@ -623,11 +622,14 @@
     it
   }
 
-  show heading: it => {
-    set text(weight: "bold", size: 14pt)
-    set block(above: 1.5em, below: 1.5em)
-    it
-  } + empty_par()
+  show heading: it => (
+    {
+      set text(weight: "bold", size: 14pt)
+      set block(above: 1.5em, below: 1.5em)
+      it
+    }
+      + empty_par()
+  )
 
 
   // Start with a chapter outline.
@@ -642,7 +644,7 @@
   )
 
   counter(page).update(1)
- 
+
   set math.equation(supplement: [式], numbering: equation_num)
 
   body
@@ -656,17 +658,26 @@
 
 // LATEX character
 #let LATEX = {
-  [L];box(move(
-    dx: -4.2pt, dy: -1.2pt,
-    box(scale(65%)[A])
-  ));box(move(
-  dx: -5.7pt, dy: 0pt,
-  [T]
-));box(move(
-  dx: -7.0pt, dy: 2.7pt,
-  box(scale(100%)[E])
-));box(move(
-  dx: -8.0pt, dy: 0pt,
-  [X]
-));h(-8.0pt)
+  [L]
+  box(move(
+    dx: -4.2pt,
+    dy: -1.2pt,
+    box(scale(65%)[A]),
+  ))
+  box(move(
+    dx: -5.7pt,
+    dy: 0pt,
+    [T],
+  ))
+  box(move(
+    dx: -7.0pt,
+    dy: 2.7pt,
+    box(scale(100%)[E]),
+  ))
+  box(move(
+    dx: -8.0pt,
+    dy: 0pt,
+    [X],
+  ))
+  h(-8.0pt)
 }

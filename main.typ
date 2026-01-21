@@ -1,23 +1,24 @@
 #import "./template.typ": *
 #show: master_thesis.with(
-  title: "Typstで書く修論のテンプレ",
-  author: "右往 左往",
+  class: "修士",
+  title: [多関節飛行ロボットによる接触作業に向けた \ 力覚提示を有する \ 上肢外骨格型遠隔操作システムの開発],
+  date: datetime(year: 2027, month: 1, day: 28),
+  mentor: "趙 漠居",
+  mentor-post: "講師",
   university: "東京大学大学院",
   school: "工学系研究科",
-  department: "航空宇宙工学専攻",
-  id: "12-345678",
-  mentor: "魚 竿",
-  mentor-post: "准教授",
-  class: "修士",
+  department: "機械工学専攻",
+  id: "37-256208",
+  author: "奥 朋哉",
   abstract_ja: [
-      近年の宇宙ってほんますごい. 近年の宇宙ってほんますごい. 近年の宇宙ってほんますごい. 近年の宇宙ってほんますごい. 近年の宇宙ってほんますごい. 近年の宇宙ってほんますごい. 近年の宇宙ってほんますごい. 近年の宇宙ってほんますごい. 近年の宇宙ってほんますごい. 近年の宇宙ってほんますごい. 近年の宇宙ってほんますごい.
+    近年の宇宙ってほんますごい. 近年の宇宙ってほんますごい. 近年の宇宙ってほんますごい. 近年の宇宙ってほんますごい. 近年の宇宙ってほんますごい. 近年の宇宙ってほんますごい. 近年の宇宙ってほんますごい. 近年の宇宙ってほんますごい. 近年の宇宙ってほんますごい. 近年の宇宙ってほんますごい. 近年の宇宙ってほんますごい.
   ],
   keywords_ja: ("宇宙", "異常検知"),
   bibliography-file: "references.bib",
 )
 
 = 序論<Chap_1>
- Typstはmarkdown likeなコーディングでpdf, ポスター, スライド等のドキュメントを作成できます. Rust言語で書かれており, コンパイルが#LATEX に比べて早いのが特長です.
+Typstはmarkdown likeなコーディングでpdf, ポスター, スライド等のドキュメントを作成できます. Rust言語で書かれており, コンパイルが#LATEX に比べて早いのが特長です.
 
 == Typstは優秀だ
 ```typ
@@ -38,12 +39,13 @@ $ A = mat(1, 2; 3, 4) $ <eq1>
 
 関数を作れば
 #img(
-  image("Figures/typst.svg", width: 20%),
+  image("figures/typst.svg", width: 20%),
   caption: [イメージ],
 ) <img1>\
 @img1 を表示できますし,
 
-#tbl(table(
+#tbl(
+  table(
     columns: 4,
     [t], [1], [2], [3],
     [y], [0.3s], [0.4s], [0.8s],
@@ -56,13 +58,13 @@ $ A = mat(1, 2; 3, 4) $ <eq1>
 
 #LATEX はカスタム性の高さ, 歴史的なところからまだまだ廃れないとは思いますが, @Chap_1 の例からも卒論や修論や学会の予稿等の作成においてはTypst @madje2022programmable の使いやすさから置き換わるのではないかと思います(半分願望).
 #img(
-  image("Figures/typst-github.svg", width: 20%),
+  image("figures/typst-github.svg", width: 20%),
   caption: [Typst + git @madje2022programmable],
 ) <img2>
 
 === #LATEX はコンパイルが遅い
 
-本資料は, #LATEX でコンパイルの待ち時間中に作りました. 
+本資料は, #LATEX でコンパイルの待ち時間中に作りました.
 他にも
 ```typ
 #include path.typ
@@ -95,7 +97,7 @@ Typstでは関数定義が簡単であるので定理の書き方などをカス
 #let theorem = thmbox(
   "theorem",
   "定理",
-  base_level: 1
+  base_level: 1,
 )
 
 #theorem("ヲイラ-")[
@@ -136,7 +138,7 @@ identifier毎にカウントを柔軟に変えられるようにしてあるの�
 )
 #definition("Prime numbers")[
   A natural number is called a _prime number_ if it is greater than $1$ and
-  cannot be written as the product of two smaller natural numbers. 
+  cannot be written as the product of two smaller natural numbers.
 ] <definition>
 ```
 
@@ -148,7 +150,7 @@ identifier毎にカウントを柔軟に変えられるようにしてあるの�
 )
 
 #definition[
-  Typst is a new markup-based typesetting system for the sciences. 
+  Typst is a new markup-based typesetting system for the sciences.
 ] <definition>
 
 @definition のようにカウントがリセットされています.
@@ -190,7 +192,7 @@ baseにidentifierを入れることで@corollary のようにサブカウント�
 
 #let example = thmplain(
   "example",
-  "例"
+  "例",
 ).with(numbering: none)
 
 #example[
