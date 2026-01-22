@@ -13,8 +13,23 @@
   bibliography-file: "references.bib",
 )
 
-= 序論 <chapter:1>
+= 序論 <chap:intro>
 
-= 力覚提示付き遠隔操作システムの先行研究と本研究の提案システム <chapter:2>
+= 先行研究と提案手法 <chap:previous_work>
 
-=
+= 上肢外骨格デバイスの設計 <chap:design>
+
+== 操作対象となる多関節飛行ロボット
+
+== 人間の腕の構造 <sec:structure_of_human_uplimb>
+
+人間の腕は@fig:structure_of_human_uplimb で示すように，肩関節が3自由度，肘関節が2自由度，手首関節が2自由度の計7自由度で構成されている．
+
+#img(
+  image("assets/structure_of_human_uplimb.png", width: 75%),
+  caption: "Structure of human up-limb",
+)<fig:structure_of_human_uplimb>
+
+= 実験
+
+= 結論

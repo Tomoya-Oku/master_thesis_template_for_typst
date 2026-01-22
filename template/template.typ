@@ -207,7 +207,7 @@
       img
     },
     caption: caption,
-    supplement: [図],
+    supplement: [Fig.],
     numbering: image_num,
     kind: "image",
   )
