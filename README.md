@@ -23,7 +23,7 @@
 ## 使い方 (VSCode)
 1. 本リポジトリをclone
 1. VSCodeで開く
-1. 拡張機能: **Tynymist**をインストール
+1. 拡張機能: **Tinymist**をインストール
 
 ### ファイルのリアルタイムプレビュー
 `main.typ`，または`abstract.typ`を開いた状態で，
