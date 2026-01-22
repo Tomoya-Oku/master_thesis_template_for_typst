@@ -314,84 +314,6 @@
   }
 }
 
-// Definition of image outline
-#let toc_img() = {
-  align(left)[
-    #text(size: 20pt, weight: "bold")[
-      #v(30pt)
-      図目次
-      #v(30pt)
-    ]
-  ]
-
-  set text(size: 12pt)
-  set par(leading: 1.24em, first-line-indent: 0pt)
-
-  context {
-    let elements = query(
-      figure.where(
-        outlined: true,
-        kind: "image",
-      ),
-    )
-    for el in elements {
-      let loc = el.location()
-      let chapt = counter(heading).at(loc).at(0)
-      let num = counter(el.kind + "-chapter" + str(chapt)).at(loc).at(0) + 1
-      let page_num = counter(page).at(loc).first()
-      let caption_body = to-string(el.caption.body)
-
-      str(chapt)
-      "."
-      str(num)
-      h(1em)
-      caption_body
-      box(width: 1fr, h(0.5em) + box(width: 1fr, repeat[.]) + h(0.5em))
-      [#page_num]
-      linebreak()
-    }
-  }
-}
-
-// Definition of table outline
-#let toc_tbl() = {
-  align(left)[
-    #text(size: 20pt, weight: "bold")[
-      #v(30pt)
-      表目次
-      #v(30pt)
-    ]
-  ]
-
-  set text(size: 12pt)
-  set par(leading: 1.24em, first-line-indent: 0pt)
-
-  context {
-    let elements = query(
-      figure.where(
-        outlined: true,
-        kind: "table",
-      ),
-    )
-    for el in elements {
-      let loc = el.location()
-      let chapt = counter(heading).at(loc).at(0)
-      let num = counter(el.kind + "-chapter" + str(chapt)).at(loc).at(0) + 1
-      let page_num = counter(page).at(loc).first()
-      let caption_body = to-string(el.caption.body)
-
-      str(chapt)
-      "."
-      str(num)
-      h(1em)
-      caption_body
-      box(width: 1fr, h(0.5em) + box(width: 1fr, repeat[.]) + h(0.5em))
-      [#page_num]
-      linebreak()
-    }
-  }
-}
-
 // Setting empty par
 #let empty_par() = {
   v(-1em)
@@ -585,8 +507,10 @@
   )
 
   counter(page).update(1)
-  // Show abstruct
-  abstract_page(abstract_ja, abstract_en, keywords_ja: keywords_ja, keywords_en: keywords_en)
+
+  // Show abstract
+  include "../abstract.typ"
+
   pagebreak()
 
   // Configure paragraph properties.
@@ -631,13 +555,9 @@
       + empty_par()
   )
 
-
   // Start with a chapter outline.
   toc()
   pagebreak()
-  toc_img()
-  pagebreak()
-  toc_tbl()
 
   set page(
     numbering: "1",
@@ -652,7 +572,7 @@
   // Display bibliography.
   if bibliography-file != none {
     show bibliography: set text(12pt)
-    bibliography(bibliography-file, title: "参考文献", style: "ieee")
+    bibliography("../" + bibliography-file, title: "参考文献", style: "ieee")
   }
 }
 
